@@ -7,6 +7,7 @@ use ferrum::{BCCLattice, IronMemory, Pattern, IronLLM, CharTokenizer};
 use ferrum::anneal::Annealer;
 use ferrum::energy::Energy;
 use ferrum::hopfield::print_pattern;
+use ferrum::training::{IronTrainer, TrainConfig, demo_training};
 use std::time::Instant;
 
 fn main() {
@@ -17,7 +18,6 @@ fn main() {
     println!("================================================================");
     println!();
     
-    // Select demo based on args
     let args: Vec<String> = std::env::args().collect();
     
     if args.len() > 1 {
@@ -25,17 +25,19 @@ fn main() {
             "lattice" => demo_lattice_annealing(),
             "memory" => demo_associative_memory(),
             "llm" => demo_iron_llm(),
+            "train" => demo_iron_llm_training(),
             "all" => {
                 demo_lattice_annealing();
                 println!("\n{}\n", "=".repeat(64));
                 demo_associative_memory();
                 println!("\n{}\n", "=".repeat(64));
                 demo_iron_llm();
+                println!("\n{}\n", "=".repeat(64));
+                demo_iron_llm_training();
             }
             _ => print_usage(),
         }
     } else {
-        // Default: run Iron-LLM demo
         demo_iron_llm();
     }
 }
@@ -47,6 +49,7 @@ fn print_usage() {
     println!("  lattice  - BCC lattice annealing (finding ground state)");
     println!("  memory   - Hopfield associative memory (pattern recall)");
     println!("  llm      - Iron-LLM text generation (default)");
+    println!("  train    - Train Iron-LLM on sample text");
     println!("  all      - Run all demos");
 }
 
@@ -79,14 +82,11 @@ fn demo_lattice_annealing() {
 fn demo_associative_memory() {
     println!("[ DEMO: Hopfield Associative Memory ]");
     println!();
-    println!("Storing patterns, then recalling from corrupted input.");
-    println!();
     
     let width = 8;
     let height = 8;
     let mut memory = IronMemory::new(width, height);
     
-    // Define patterns
     let pattern_a = Pattern::from_string(
         "........\
          ..####..\
@@ -111,7 +111,6 @@ fn demo_associative_memory() {
         Some("X")
     );
     
-    // Store
     println!("Storing pattern A:");
     print_pattern(&pattern_a, width);
     memory.store(&pattern_a);
@@ -120,7 +119,6 @@ fn demo_associative_memory() {
     print_pattern(&pattern_x, width);
     memory.store(&pattern_x);
     
-    // Recall
     println!("\n--- Recall Test ---");
     let corrupted = pattern_a.corrupt(0.25);
     println!("\nInput (25% corrupted A):");
@@ -137,74 +135,76 @@ fn demo_associative_memory() {
 fn demo_iron_llm() {
     println!("[ DEMO: Iron-LLM - Language Model on BCC Lattice ]");
     println!();
-    println!("This is an experimental architecture where:");
-    println!("  - Tokens are embedded as spin patterns");
-    println!("  - BCC lattice layers settle to process context");
-    println!("  - Output spins are decoded to next-token predictions");
-    println!();
     
-    // Training corpus
     let corpus = "the iron speaks in configurations not sequences \
                   the lattice finds its ground state through annealing \
                   silicon thinks in layers iron thinks in wholes \
-                  the code is the crystal the crystal is the code \
-                  earth speaking through deliberate pattern \
-                  computation emerges from atomic structure \
-                  what the material naturally computes ";
+                  the code is the crystal the crystal is the code ";
     
-    // Create tokenizer
     let tokenizer = CharTokenizer::from_text(corpus);
-    println!("Vocabulary: {} characters", tokenizer.vocab_size());
-    println!("Corpus: {} characters", corpus.len());
-    println!();
+    println!("Vocabulary: {} chars", tokenizer.vocab_size());
     
-    // Create model (small for demo)
-    println!("Creating Iron-LLM...");
-    println!("  Context length: 16");
-    println!("  Embedding dim: 32");
-    println!("  Layers: 2");
-    println!("  Layer depth: 3");
+    println!("Creating Iron-LLM (16 context, 32 dim, 2 layers)...");
+    let mut model = IronLLM::new(tokenizer.vocab_size(), 16, 32, 2, 3);
     
-    let start = Instant::now();
-    let mut model = IronLLM::new(
-        tokenizer.vocab_size(),  // vocab
-        16,                       // context
-        32,                       // embed_dim
-        2,                        // layers
-        3,                        // layer_depth
-    );
-    println!("  Created in {:?}", start.elapsed());
-    println!();
+    println!("\n--- Generation (untrained) ---\n");
     
-    // Generate text
-    println!("--- Generation (random weights, no training) ---");
-    println!();
-    
-    let prompts = ["the ", "iron ", "code "];
-    
-    for prompt in prompts {
-        print!("Prompt: \"{}\" -> ", prompt);
-        
+    for prompt in ["the ", "iron ", "code "] {
         let tokens = tokenizer.encode(prompt);
-        let start = Instant::now();
         let generated = model.generate(&tokens, 20, 1.5);
-        let elapsed = start.elapsed();
-        
         let output = tokenizer.decode(&generated);
-        println!("\"{}\"", output);
-        println!("  ({:?})", elapsed);
-        println!();
+        println!("\"{}\" -> \"{}\"", prompt.trim(), output);
     }
+}
+
+fn demo_iron_llm_training() {
+    println!("[ DEMO: Training Iron-LLM ]");
+    println!();
+    println!("Training method: Contrastive Hebbian Learning");
+    println!("  - Clamped phase: Input + correct output fixed, middle settles");
+    println!("  - Free phase: Only input fixed, network settles freely");  
+    println!("  - Update: Strengthen couplings that differ between phases");
+    println!();
     
-    println!("--- Notes ---");
+    // Smaller corpus for demo
+    let corpus = "the iron the code the iron the code the lattice the crystal ";
+    
+    let tokenizer = CharTokenizer::from_text(corpus);
+    println!("Vocabulary: {} chars", tokenizer.vocab_size());
+    println!("Corpus: \"{}\"", corpus.trim());
     println!();
-    println!("The output is random because the model has not been trained.");
-    println!("Training would require:");
-    println!("  1. Computing loss (cross-entropy on next token)");
-    println!("  2. Adjusting lattice couplings to minimize loss");
-    println!("  3. This is where iron differs from silicon:");
-    println!("     - Not backpropagation through layers");
-    println!("     - But annealing couplings to make patterns stable");
+    
+    // Tiny model for fast training demo
+    println!("Creating tiny Iron-LLM (8 context, 16 dim, 1 layer)...");
+    let mut model = IronLLM::new(
+        tokenizer.vocab_size(),
+        8,    // context
+        16,   // embed_dim
+        1,    // layers
+        2,    // layer_depth
+    );
+    
+    // Before training
+    println!("\n--- Before Training ---");
+    let tokens = tokenizer.encode("the ");
+    let generated = model.generate(&tokens, 15, 1.0);
+    println!("\"the \" -> \"{}\"", tokenizer.decode(&generated));
+    
+    // Train
+    println!("\n--- Training (3 epochs) ---\n");
+    demo_training(&mut model, &tokenizer, corpus, 3);
+    
+    // After training
+    println!("--- After Training ---");
+    let tokens = tokenizer.encode("the ");
+    let generated = model.generate(&tokens, 15, 1.0);
+    println!("\"the \" -> \"{}\"", tokenizer.decode(&generated));
+    
+    let tokens = tokenizer.encode("iron ");
+    let generated = model.generate(&tokens, 15, 1.0);
+    println!("\"iron \" -> \"{}\"", tokenizer.decode(&generated));
+    
     println!();
-    println!("The iron learns by making desired outputs into energy minima.");
+    println!("Note: With more training data and larger model, patterns emerge.");
+    println!("The iron learns by making correct sequences into energy minima.");
 }
