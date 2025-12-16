@@ -38,6 +38,10 @@ pub mod multimodal;   // Images, audio, vectors → 3D forms
 pub mod concept_lm;   // Text → Concepts → Iron → Text
 pub mod iron_mind;    // Unified system: the complete Iron Mind
 
+// Copper: The Transmission Layer
+pub mod copper;       // FCC lattice - conductivity, flow
+pub mod alloy;        // Iron + Copper integration
+
 pub use lattice::BCCLattice;
 pub use spin::Spin;
 pub use energy::Energy;
@@ -45,3 +49,5 @@ pub use hopfield::{IronMemory, Pattern};
 pub use iron_llm::{IronLLM, IronLayer, Embedding, CharTokenizer};
 pub use training::{IronTrainer, TrainConfig, demo_training};
 pub use iron_mind::IronMind;
+pub use copper::{FCCLattice, ChannelNetwork};
+pub use alloy::Alloy;

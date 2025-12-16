@@ -15,6 +15,8 @@ use ferrum::hierarchy::demo_hierarchical;
 use ferrum::learned::demo_learned_embeddings;
 use ferrum::multimodal::demo_multimodal;
 use ferrum::iron_mind::demo_iron_mind;
+use ferrum::copper::channel::demo_copper_channels;
+use ferrum::alloy::demo_alloy;
 use std::time::Instant;
 
 fn main() {
@@ -35,6 +37,10 @@ fn main() {
             "hierarchy" => demo_hierarchical(),  // Forms within forms
             "learned" => demo_learned_embeddings(), // Data-driven embeddings
             "multimodal" => demo_multimodal(),   // Images, audio → forms
+            
+            // Copper: The Transmission Layer
+            "copper" => demo_copper_channels(),  // FCC lattice message passing
+            "alloy" => demo_alloy(),             // Iron + Copper integration
             
             // Foundation demos
             "concept" => demo_concept_space(),   // Basic 3D concepts
@@ -57,6 +63,10 @@ fn main() {
                 demo_learned_embeddings();
                 println!("\n{}\n", "=".repeat(64));
                 demo_multimodal();
+                println!("\n{}\n", "=".repeat(64));
+                demo_copper_channels();
+                println!("\n{}\n", "=".repeat(64));
+                demo_alloy();
             }
             _ => print_usage(),
         }
@@ -74,6 +84,10 @@ fn print_usage() {
     println!("  hierarchy  - Forms within forms (nested structure)");
     println!("  learned    - Data-driven word→form mappings");
     println!("  multimodal - Images, audio, vectors → 3D forms");
+    println!();
+    println!("=== COPPER (Transmission Layer) ===");
+    println!("  copper     - FCC lattice message passing");
+    println!("  alloy      - Iron + Copper integration");
     println!();
     println!("=== FOUNDATION ===");
     println!("  concept    - Basic 3D concept space");
