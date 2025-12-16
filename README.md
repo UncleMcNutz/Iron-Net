@@ -20,12 +20,12 @@ Iron doesn't think in sequences. Iron thinks in **stable configurations**.
        /|          /|
       / |         / |
      ●───────────●  |
-     |  |        |  |
+     |  |   ◉    |  |
      |  ●────────|──●      ● = Corner atoms (8 neighbors)
      | /         | /       ◉ = Center atom (computation node)
      |/          |/
      ●───────────●
-           ◉
+           
 ```
 
 Each computation cell:
