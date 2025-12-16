@@ -28,7 +28,8 @@ pub mod carbon;
 pub mod hopfield;
 pub mod iron_llm;
 pub mod training;
-pub mod concept;  // Iron's native language: 3D forms, not 2D text
+pub mod concept;     // Iron's native language: 3D forms
+pub mod concept_lm;  // Text → Concepts → Iron → Concepts → Text
 
 pub use lattice::BCCLattice;
 pub use spin::Spin;

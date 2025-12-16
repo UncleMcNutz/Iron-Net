@@ -9,6 +9,7 @@ use ferrum::energy::Energy;
 use ferrum::hopfield::print_pattern;
 use ferrum::training::{IronTrainer, TrainConfig, demo_training};
 use ferrum::concept::demo_concept_space;
+use ferrum::concept_lm::demo_concept_lm;
 use std::time::Instant;
 
 fn main() {
@@ -27,22 +28,21 @@ fn main() {
             "memory" => demo_associative_memory(),
             "llm" => demo_iron_llm(),
             "train" => demo_iron_llm_training(),
-            "concept" => demo_concept_space(),  // The main event
+            "concept" => demo_concept_space(),
+            "clm" => demo_concept_lm(),  // The main event: Concept Language Model
             "all" => {
                 demo_lattice_annealing();
                 println!("\n{}\n", "=".repeat(64));
                 demo_associative_memory();
                 println!("\n{}\n", "=".repeat(64));
-                demo_iron_llm();
-                println!("\n{}\n", "=".repeat(64));
-                demo_iron_llm_training();
-                println!("\n{}\n", "=".repeat(64));
                 demo_concept_space();
+                println!("\n{}\n", "=".repeat(64));
+                demo_concept_lm();
             }
             _ => print_usage(),
         }
     } else {
-        demo_concept_space();  // Default to the main mode
+        demo_concept_lm();  // Default: Concept Language Model
     }
 }
 
@@ -50,12 +50,13 @@ fn print_usage() {
     println!("Usage: ferrum [demo]");
     println!();
     println!("Demos:");
-    println!("  concept  - 3D concept space (default) - Iron's native language");
+    println!("  clm      - Concept Language Model (default) - Text→Concepts→Iron→Text");
+    println!("  concept  - 3D concept space - Iron's native geometric forms");
     println!("  lattice  - BCC lattice annealing (finding ground state)");
     println!("  memory   - Hopfield associative memory (pattern recall)");
-    println!("  llm      - Iron-LLM text generation (silicon's language)");
-    println!("  train    - Train Iron-LLM on sample text");
-    println!("  all      - Run all demos");
+    println!("  llm      - Legacy Iron-LLM (text directly, silicon's way)");
+    println!("  train    - Train legacy Iron-LLM");
+    println!("  all      - Run main demos");
 }
 
 fn demo_lattice_annealing() {
