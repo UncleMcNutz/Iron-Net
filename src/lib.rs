@@ -28,8 +28,15 @@ pub mod carbon;
 pub mod hopfield;
 pub mod iron_llm;
 pub mod training;
-pub mod concept;     // Iron's native language: 3D forms
-pub mod concept_lm;  // Text → Concepts → Iron → Concepts → Text
+
+// The Core: 3D Concept-Based Intelligence
+pub mod concept;      // Iron's native language: 3D forms
+pub mod algebra;      // Concept operations: +, -, analogy
+pub mod hierarchy;    // Forms within forms: nested structure
+pub mod learned;      // Data-driven word→form mappings
+pub mod multimodal;   // Images, audio, vectors → 3D forms
+pub mod concept_lm;   // Text → Concepts → Iron → Text
+pub mod iron_mind;    // Unified system: the complete Iron Mind
 
 pub use lattice::BCCLattice;
 pub use spin::Spin;
@@ -37,3 +44,4 @@ pub use energy::Energy;
 pub use hopfield::{IronMemory, Pattern};
 pub use iron_llm::{IronLLM, IronLayer, Embedding, CharTokenizer};
 pub use training::{IronTrainer, TrainConfig, demo_training};
+pub use iron_mind::IronMind;

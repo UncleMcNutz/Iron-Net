@@ -1,6 +1,6 @@
 //! # Ferrum: Iron-Structured Computation
 //!
-//! Demonstration of BCC lattice computation and Iron-LLM.
+//! Demonstration of BCC lattice computation and Iron Mind.
 //! Earth speaking through deliberate pattern.
 
 use ferrum::{BCCLattice, IronMemory, Pattern, IronLLM, CharTokenizer};
@@ -10,12 +10,17 @@ use ferrum::hopfield::print_pattern;
 use ferrum::training::{IronTrainer, TrainConfig, demo_training};
 use ferrum::concept::demo_concept_space;
 use ferrum::concept_lm::demo_concept_lm;
+use ferrum::algebra::demo_concept_algebra;
+use ferrum::hierarchy::demo_hierarchical;
+use ferrum::learned::demo_learned_embeddings;
+use ferrum::multimodal::demo_multimodal;
+use ferrum::iron_mind::demo_iron_mind;
 use std::time::Instant;
 
 fn main() {
     println!("================================================================");
     println!("           FERRUM: Iron-Structured Computation                  ");
-    println!("           BCC Lattice | Associative Memory | Iron-LLM          ");
+    println!("           Concept-Based Intelligence in 3D Forms               ");
     println!("           Earth Speaking Through Code                          ");
     println!("================================================================");
     println!();
@@ -24,39 +29,63 @@ fn main() {
     
     if args.len() > 1 {
         match args[1].as_str() {
+            // Core demos
+            "mind" => demo_iron_mind(),        // The complete system
+            "algebra" => demo_concept_algebra(), // Concept operations
+            "hierarchy" => demo_hierarchical(),  // Forms within forms
+            "learned" => demo_learned_embeddings(), // Data-driven embeddings
+            "multimodal" => demo_multimodal(),   // Images, audio → forms
+            
+            // Foundation demos
+            "concept" => demo_concept_space(),   // Basic 3D concepts
+            "clm" => demo_concept_lm(),          // Concept language model
             "lattice" => demo_lattice_annealing(),
             "memory" => demo_associative_memory(),
+            
+            // Legacy (silicon-style)
             "llm" => demo_iron_llm(),
             "train" => demo_iron_llm_training(),
-            "concept" => demo_concept_space(),
-            "clm" => demo_concept_lm(),  // The main event: Concept Language Model
+            
+            // Run everything
             "all" => {
-                demo_lattice_annealing();
+                demo_iron_mind();
                 println!("\n{}\n", "=".repeat(64));
-                demo_associative_memory();
+                demo_concept_algebra();
                 println!("\n{}\n", "=".repeat(64));
-                demo_concept_space();
+                demo_hierarchical();
                 println!("\n{}\n", "=".repeat(64));
-                demo_concept_lm();
+                demo_learned_embeddings();
+                println!("\n{}\n", "=".repeat(64));
+                demo_multimodal();
             }
             _ => print_usage(),
         }
     } else {
-        demo_concept_lm();  // Default: Concept Language Model
+        demo_iron_mind();  // Default: the complete system
     }
 }
 
 fn print_usage() {
     println!("Usage: ferrum [demo]");
     println!();
-    println!("Demos:");
-    println!("  clm      - Concept Language Model (default) - Text→Concepts→Iron→Text");
-    println!("  concept  - 3D concept space - Iron's native geometric forms");
-    println!("  lattice  - BCC lattice annealing (finding ground state)");
-    println!("  memory   - Hopfield associative memory (pattern recall)");
-    println!("  llm      - Legacy Iron-LLM (text directly, silicon's way)");
-    println!("  train    - Train legacy Iron-LLM");
-    println!("  all      - Run main demos");
+    println!("=== IRON MIND (Concept-Based Intelligence) ===");
+    println!("  mind       - Complete unified system (default)");
+    println!("  algebra    - Concept operations: +, -, analogy");
+    println!("  hierarchy  - Forms within forms (nested structure)");
+    println!("  learned    - Data-driven word→form mappings");
+    println!("  multimodal - Images, audio, vectors → 3D forms");
+    println!();
+    println!("=== FOUNDATION ===");
+    println!("  concept    - Basic 3D concept space");
+    println!("  clm        - Concept language model");
+    println!("  lattice    - BCC lattice annealing");
+    println!("  memory     - Hopfield associative memory");
+    println!();
+    println!("=== LEGACY (Silicon-style) ===");
+    println!("  llm        - Token-based Iron-LLM");
+    println!("  train      - Train token-based model");
+    println!();
+    println!("  all        - Run all main demos");
 }
 
 fn demo_lattice_annealing() {
