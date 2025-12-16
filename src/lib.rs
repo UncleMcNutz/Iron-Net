@@ -26,8 +26,10 @@ pub mod energy;
 pub mod anneal;
 pub mod carbon;
 pub mod hopfield;
+pub mod iron_llm;
 
 pub use lattice::BCCLattice;
 pub use spin::Spin;
 pub use energy::Energy;
 pub use hopfield::{IronMemory, Pattern};
+pub use iron_llm::{IronLLM, IronLayer, Embedding, CharTokenizer};
