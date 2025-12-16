@@ -8,6 +8,7 @@ use ferrum::anneal::Annealer;
 use ferrum::energy::Energy;
 use ferrum::hopfield::print_pattern;
 use ferrum::training::{IronTrainer, TrainConfig, demo_training};
+use ferrum::concept::demo_concept_space;
 use std::time::Instant;
 
 fn main() {
@@ -26,6 +27,7 @@ fn main() {
             "memory" => demo_associative_memory(),
             "llm" => demo_iron_llm(),
             "train" => demo_iron_llm_training(),
+            "concept" => demo_concept_space(),  // The main event
             "all" => {
                 demo_lattice_annealing();
                 println!("\n{}\n", "=".repeat(64));
@@ -34,11 +36,13 @@ fn main() {
                 demo_iron_llm();
                 println!("\n{}\n", "=".repeat(64));
                 demo_iron_llm_training();
+                println!("\n{}\n", "=".repeat(64));
+                demo_concept_space();
             }
             _ => print_usage(),
         }
     } else {
-        demo_iron_llm();
+        demo_concept_space();  // Default to the main mode
     }
 }
 
@@ -46,9 +50,10 @@ fn print_usage() {
     println!("Usage: ferrum [demo]");
     println!();
     println!("Demos:");
+    println!("  concept  - 3D concept space (default) - Iron's native language");
     println!("  lattice  - BCC lattice annealing (finding ground state)");
     println!("  memory   - Hopfield associative memory (pattern recall)");
-    println!("  llm      - Iron-LLM text generation (default)");
+    println!("  llm      - Iron-LLM text generation (silicon's language)");
     println!("  train    - Train Iron-LLM on sample text");
     println!("  all      - Run all demos");
 }
