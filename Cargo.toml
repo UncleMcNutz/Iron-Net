@@ -1,0 +1,14 @@
+[package]
+name = "ferrum"
+version = "0.1.0"
+edition = "2021"
+description = "Iron-structured computation - BCC lattice computing substrate"
+authors = ["Earth Speaking"]
+
+[dependencies]
+rand = "0.8"
+rayon = "1.8"          # Parallel iteration - like magnetic domains updating together
+
+[features]
+default = []
+visualization = []     # Future: render domain states
